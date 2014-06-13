@@ -12,10 +12,13 @@
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         />
-    <Button
+    <ToggleButton
+        android:id="@+id/capture_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/Capture"
+        android:checked="false"
+        android:textOn="@string/stop_scan"
+        android:textOff="@string/start_scan"
         android:layout_alignBottom="@id/camera_preview"
         android:layout_centerInParent="true"/>
 

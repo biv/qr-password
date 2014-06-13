@@ -31,6 +31,13 @@ public class CameraManager {
         camera = null;
     }
 
+    public void getOnePicture(Camera.PreviewCallback previewCallback) {
+        if (camera == null) {
+            throw new RuntimeException("Camera is not initialized");
+        }
+        camera.setOneShotPreviewCallback(previewCallback);
+    }
+
     private void startCameraPreview() {
         if (surfaceHolder != null && camera != null) {
             try {

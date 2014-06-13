@@ -1,13 +1,18 @@
 package ru.giperball.qrpassword.app;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.SurfaceView;
+import android.widget.CompoundButton;
+import android.widget.ToggleButton;
 
 
-public class MainActivity extends Activity {
+public class MainActivity extends Activity implements Scanner.ScannerListener {
     private CameraManager cameraManager;
 
     @Override
@@ -16,6 +21,18 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
         SurfaceView surfaceView = (SurfaceView)findViewById(R.id.camera_preview);
         cameraManager = new CameraManager(surfaceView.getHolder());
+        final Scanner scanner = new Scanner(this, cameraManager);
+        ToggleButton captureButton = (ToggleButton)findViewById(R.id.capture_button);
+        captureButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    scanner.startScan();
+                } else {
+                    scanner.stopScan();
+                }
+            }
+        });
     }
 
     @Override
@@ -47,5 +64,23 @@ public class MainActivity extends Activity {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onScannerResult(String scanResult) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(R.string.result_dialog_title);
+        builder.setMessage(scanResult);
+        builder.setCancelable(true);
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                ToggleButton captureButton = (ToggleButton)findViewById(R.id.capture_button);
+                captureButton.setChecked(false);
+                dialog.dismiss();
+            }
+        });
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
     }
 }
