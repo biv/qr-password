@@ -17,21 +17,24 @@ public class CameraManager {
         surfaceHolder.addCallback(new PreviewSurfaceCallback());
     }
 
-    public void startCamera() {
+    synchronized public void startCamera() {
         camera = Camera.open();
         if (camera == null) {
             throw new RuntimeException("Camera not found");
         }
+        Camera.Parameters parameters = camera.getParameters();
+        parameters.setFocusMode(Camera.Parameters.FOCUS_MODE_CONTINUOUS_PICTURE);
+        camera.setParameters(parameters);
         startCameraPreview();
     }
 
-    public void stopCamera() {
+    synchronized public void stopCamera() {
         stopCameraPreview();
         camera.release();
         camera = null;
     }
 
-    public void getOnePicture(Camera.PreviewCallback previewCallback) {
+    synchronized public void getOnePicture(Camera.PreviewCallback previewCallback) {
         if (camera == null) {
             throw new RuntimeException("Camera is not initialized");
         }

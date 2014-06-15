@@ -12,7 +12,7 @@ import android.util.Log;
 public class Scanner {
     private ScannerListener scannerListener;
     private CameraManager cameraManager;
-    private ScannerHandler scannerHandler;
+    private final ScannerHandler scannerHandler;
     private Handler decodeHandler;
     private boolean isScanEnabled = false;
 
@@ -45,7 +45,9 @@ public class Scanner {
         cameraManager.getOnePicture(new Camera.PreviewCallback() {
             @Override
             public void onPreviewFrame(byte[] data, Camera camera) {
-                Message message = decodeHandler.obtainMessage(Decoder.DECODE, data);
+                Camera.Size previewSize = camera.getParameters().getPreviewSize();
+                Message message = decodeHandler.obtainMessage(Decoder.DECODE,
+                        previewSize.width, previewSize.height, data);
                 message.sendToTarget();
             }
         });

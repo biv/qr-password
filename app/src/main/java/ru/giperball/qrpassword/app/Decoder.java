@@ -5,6 +5,12 @@ import android.os.Looper;
 import android.os.Message;
 import android.util.Log;
 
+import com.google.zxing.BinaryBitmap;
+import com.google.zxing.MultiFormatReader;
+import com.google.zxing.PlanarYUVLuminanceSource;
+import com.google.zxing.Result;
+import com.google.zxing.common.HybridBinarizer;
+
 import java.util.concurrent.CountDownLatch;
 
 /**
@@ -12,7 +18,7 @@ import java.util.concurrent.CountDownLatch;
  */
 public class Decoder implements Runnable {
     private Handler handler;
-    private Handler outterHandler;
+    private Handler outerHandler;
     private final CountDownLatch handlerInitLatch;
     private boolean isRunning;
 
@@ -21,7 +27,7 @@ public class Decoder implements Runnable {
 
     public Decoder(Handler handler) {
         handlerInitLatch = new CountDownLatch(1);
-        this.outterHandler = handler;
+        this.outerHandler = handler;
     }
 
     public Handler getHandler() {
@@ -41,6 +47,8 @@ public class Decoder implements Runnable {
     }
 
     private class DecodeHandler extends Handler {
+        private MultiFormatReader reader = new MultiFormatReader();
+
         @Override
         public void handleMessage(Message msg) {
             if (!isRunning) {
@@ -49,11 +57,15 @@ public class Decoder implements Runnable {
             switch (msg.what) {
                 case DECODE:
                     byte[] data = (byte[])msg.obj;
+                    int width = msg.arg1;
+                    int height = msg.arg2;
                     try {
-                        String decodeResult = decode(data);
-                        outterHandler.obtainMessage(Scanner.SUCCESSFUL_RESULT, decodeResult).sendToTarget();
+                        String decodeResult = decode(data, width, height);
+                        outerHandler.obtainMessage(Scanner.SUCCESSFUL_RESULT, decodeResult).sendToTarget();
+                        Log.i(Decoder.class.getName(), "successful decode");
                     } catch (Exception e) {
-                        outterHandler.obtainMessage(Scanner.ONE_MORE_SHOT).sendToTarget();
+                        outerHandler.obtainMessage(Scanner.ONE_MORE_SHOT).sendToTarget();
+                        Log.i(Decoder.class.getName(), "decode failed: " + e.getMessage());
                     }
                     break;
                 case QUIT:
@@ -63,10 +75,11 @@ public class Decoder implements Runnable {
             }
         }
 
-        private String decode(byte[] data) throws Exception{
-            Log.i(Decoder.class.getName(), "decode");
-            Thread.sleep(3000);
-            return "PREVED"; //Todo
+        private String decode(byte[] data, int width, int height) throws Exception{
+            PlanarYUVLuminanceSource source = new PlanarYUVLuminanceSource(data, width, height, 0, 0, width, height, false);
+            BinaryBitmap bitmap = new BinaryBitmap(new HybridBinarizer(source));
+            Result result = reader.decode(bitmap);
+            return result.getText();
         }
     }
 }
