@@ -8,7 +8,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
-import ru.giperball.qrpassword.app.R;
+import ru.giperball.qrpassword.app.reader.CaptureActivity;
 
 public class MainActivity extends Activity {
 

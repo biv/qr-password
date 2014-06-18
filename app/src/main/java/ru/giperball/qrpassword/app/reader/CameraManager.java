@@ -1,4 +1,4 @@
-package ru.giperball.qrpassword.app;
+package ru.giperball.qrpassword.app.reader;
 
 import android.hardware.Camera;
 import android.view.SurfaceHolder;

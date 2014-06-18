@@ -1,4 +1,4 @@
-package ru.giperball.qrpassword.app;
+package ru.giperball.qrpassword.app.reader;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -9,6 +9,8 @@ import android.view.MenuItem;
 import android.view.SurfaceView;
 import android.widget.CompoundButton;
 import android.widget.ToggleButton;
+
+import ru.giperball.qrpassword.app.R;
 
 
 public class CaptureActivity extends Activity implements Scanner.ScannerListener {

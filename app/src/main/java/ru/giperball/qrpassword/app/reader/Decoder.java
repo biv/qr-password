@@ -1,4 +1,4 @@
-package ru.giperball.qrpassword.app;
+package ru.giperball.qrpassword.app.reader;
 
 import android.os.Handler;
 import android.os.Looper;
@@ -14,7 +14,7 @@ import com.google.zxing.common.HybridBinarizer;
 import java.util.concurrent.CountDownLatch;
 
 /**
- * Created by biv on 14.06.14.
+ * Decode pictures from camera as QR code
  */
 public class Decoder implements Runnable {
     private Handler handler;
@@ -34,6 +34,7 @@ public class Decoder implements Runnable {
         try {
             handlerInitLatch.await();
         } catch (InterruptedException e) {
+            //Do nothing
         }
         return handler;
     }

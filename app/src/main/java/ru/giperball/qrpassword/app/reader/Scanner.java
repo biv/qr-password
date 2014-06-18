@@ -1,4 +1,4 @@
-package ru.giperball.qrpassword.app;
+package ru.giperball.qrpassword.app.reader;
 
 
 import android.hardware.Camera;
@@ -7,7 +7,7 @@ import android.os.Message;
 import android.util.Log;
 
 /**
- * Created by biv on 13.06.14.
+ * Scan pictures from camera.
  */
 public class Scanner {
     private ScannerListener scannerListener;
