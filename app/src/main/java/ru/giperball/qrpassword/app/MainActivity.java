@@ -1,51 +1,38 @@
 package ru.giperball.qrpassword.app;
 
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.SurfaceView;
-import android.widget.CompoundButton;
-import android.widget.ToggleButton;
+import android.view.View;
+import android.widget.Button;
 
+import ru.giperball.qrpassword.app.R;
 
-public class MainActivity extends Activity implements Scanner.ScannerListener {
-    private CameraManager cameraManager;
+public class MainActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        SurfaceView surfaceView = (SurfaceView)findViewById(R.id.camera_preview);
-        cameraManager = new CameraManager(surfaceView.getHolder());
-        final Scanner scanner = new Scanner(this, cameraManager);
-        ToggleButton captureButton = (ToggleButton)findViewById(R.id.capture_button);
-        captureButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        Button go2CreateQrCodeButton = (Button)findViewById(R.id.go2create_button);
+        go2CreateQrCodeButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked) {
-                    scanner.startScan();
-                } else {
-                    scanner.stopScan();
-                }
+            public void onClick(View v) {
+            }
+        });
+
+        Button go2ReadQrCodeButton = (Button)findViewById(R.id.go2read_button);
+        go2ReadQrCodeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, CaptureActivity.class);
+                startActivity(intent);
             }
         });
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        cameraManager.startCamera();
-    }
-
-    @Override
-    protected void onPause() {
-        cameraManager.stopCamera();
-        super.onPause();
-    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -64,23 +51,5 @@ public class MainActivity extends Activity implements Scanner.ScannerListener {
             return true;
         }
         return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    public void onScannerResult(String scanResult) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle(R.string.result_dialog_title);
-        builder.setMessage(scanResult);
-        builder.setCancelable(true);
-        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                ToggleButton captureButton = (ToggleButton)findViewById(R.id.capture_button);
-                captureButton.setChecked(false);
-                dialog.dismiss();
-            }
-        });
-        AlertDialog alertDialog = builder.create();
-        alertDialog.show();
     }
 }

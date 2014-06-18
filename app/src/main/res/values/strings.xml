@@ -6,5 +6,9 @@
     <string name="stop_scan">Stop scan</string>
     <string name="action_settings">Settings</string>
     <string name="result_dialog_title">Result</string>
+    <string name="title_activity_main">MainActivity</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="go2create_button">Create new QR code with password</string>
+    <string name="go2read_button">Read password from QR code</string>
 
 </resources>
