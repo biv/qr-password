@@ -16,5 +16,6 @@
     <string name="incorrect_password">Incorrect password</string>
     <string name="main_menu_set_reader_password_menu_item_name">Set password for read</string>
     <string name="main_menu_set_writer_password_menu_item_name">Set password for write</string>
+    <string name="generate">Generate</string>
 
 </resources>
