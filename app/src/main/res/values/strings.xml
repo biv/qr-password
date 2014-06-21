@@ -10,5 +10,11 @@
     <string name="hello_world">Hello world!</string>
     <string name="go2create_button">Create new QR code with password</string>
     <string name="go2read_button">Read password from QR code</string>
+    <string name="title_activity_creator">CreatorActivity</string>
+    <string name="reader_password_dialog_checkbox_text">Show password</string>
+    <string name="reader_password_dialog_ok_button_text">OK</string>
+    <string name="incorrect_password">Incorrect password</string>
+    <string name="main_menu_set_reader_password_menu_item_name">Set password for read</string>
+    <string name="main_menu_set_writer_password_menu_item_name">Set password for write</string>
 
 </resources>

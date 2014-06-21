@@ -9,6 +9,8 @@ import android.view.View;
 import android.widget.Button;
 
 import ru.giperball.qrpassword.app.reader.CaptureActivity;
+import ru.giperball.qrpassword.app.reader.ReaderPasswordDialog;
+import ru.giperball.qrpassword.app.writer.CreatorActivity;
 
 public class MainActivity extends Activity {
 
@@ -20,6 +22,7 @@ public class MainActivity extends Activity {
         go2CreateQrCodeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                go2WriterActivity();
             }
         });
 
@@ -27,29 +30,50 @@ public class MainActivity extends Activity {
         go2ReadQrCodeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, CaptureActivity.class);
-                startActivity(intent);
+                if (PasswordHolder.isReaderPasswordSet()) {
+                    go2ReaderActivity();
+                } else {
+                    ReaderPasswordDialog passwordDialog = new ReaderPasswordDialog(
+                            MainActivity.this,
+                            new PasswordDialogSubmitListener() {
+                                @Override
+                                public void onDialogSubmit() {
+                                    go2ReaderActivity();
+                                }
+                            });
+                    passwordDialog.show();
+                }
             }
         });
+    }
+
+    private void go2ReaderActivity() {
+        Intent intent = new Intent(this, CaptureActivity.class);
+        startActivity(intent);
+    }
+
+    private void go2WriterActivity() {
+        Intent intent = new Intent(this, CreatorActivity.class);
+        startActivity(intent);
     }
 
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-        if (id == R.id.action_settings) {
-            return true;
+        switch (item.getItemId()) {
+            case R.id.main_menu_set_reader_password_menu_item:
+                ReaderPasswordDialog passwordDialog = new ReaderPasswordDialog(this, null);
+                passwordDialog.show();
+                break;
+            case R.id.main_menu_set_writer_password_menu_item:
+                break;
         }
-        return super.onOptionsItemSelected(item);
+        return true;
     }
 }

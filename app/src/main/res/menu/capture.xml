@@ -3,6 +3,4 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:id="@+id/main_menu_set_reader_password_menu_item"
         android:title="@string/main_menu_set_reader_password_menu_item_name"/>
-    <item android:id="@+id/main_menu_set_writer_password_menu_item"
-        android:title="@string/main_menu_set_writer_password_menu_item_name"/>
 </menu>
