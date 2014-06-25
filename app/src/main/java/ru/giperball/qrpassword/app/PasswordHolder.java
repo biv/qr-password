@@ -5,33 +5,28 @@ package ru.giperball.qrpassword.app;
  * Hold base password for use in all activities
  */
 public class PasswordHolder {
+    private static PasswordHolder readerPasswordHolder = new PasswordHolder();
+    private static PasswordHolder writerPasswordHolder = new PasswordHolder();
     private PasswordHolder() {}
-    private static String readerPassword = null;
-    private static String writerPassword = null;
+    private String password = null;
 
-    synchronized public static String getReaderPassword() {
-        return readerPassword;
+    public static PasswordHolder getReaderPasswordHolder() {
+        return readerPasswordHolder;
     }
 
-    synchronized public static String getWriterPassword() {
-        return writerPassword;
+    public static PasswordHolder getWriterPasswordHolder() {
+        return writerPasswordHolder;
     }
 
-    synchronized public static void setReaderPassword(String readerPassword) throws BadPasswordException {
-        PasswordChecker.checkPassword(readerPassword);
-        PasswordHolder.readerPassword = readerPassword;
+    synchronized public String getPassword() {
+        return password;
     }
 
-    synchronized public static void setWriterPassword(String writerPassword) throws BadPasswordException {
-        PasswordChecker.checkPassword(writerPassword);
-        PasswordHolder.writerPassword = writerPassword;
+    synchronized public void setPassword(String password) {
+        this.password = password;
     }
 
-    synchronized public static boolean isReaderPasswordSet() {
-        return readerPassword != null;
-    }
-
-    synchronized public static boolean isWriterPasswordSet() {
-        return writerPassword != null;
+    synchronized boolean isPasswordSet() {
+        return password != null;
     }
 }

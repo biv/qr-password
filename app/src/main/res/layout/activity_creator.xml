@@ -5,31 +5,70 @@
     tools:context="ru.giperball.qrpassword.app.writer.CreatorActivity">
 
     <LinearLayout
-        android:orientation="horizontal"
+        android:orientation="vertical"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true">
+        android:layout_alignParentStart="true"
+        android:id="@+id/linearLayout">
 
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/creator_activity_data_edit_text"
-            android:layout_weight="1"/>
+            android:id="@+id/public_data_encoding_edit_text"
+            android:inputType="text"
+            android:hint="@string/public_data_placeholder_text"/>
 
-        <Button
-            android:layout_width="wrap_content"
+        <EditText
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/generate"
-            android:id="@+id/generate_button" />
+            android:id="@+id/private_data_encoding_edit_text0"
+            android:inputType="text"
+            android:hint="@string/private_data_placeholder_text"/>
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/private_data_encoding_edit_text1"
+            android:inputType="text"
+            android:hint="@string/private_data_placeholder_text"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/show"
+                android:id="@+id/show_button"
+                android:layout_margin="10dp" />
+
+            <Space
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1" />
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/save"
+                android:id="@+id/save_button"
+                android:layout_margin="10dp" />
+
+            </LinearLayout>
+
+
     </LinearLayout>
 
     <ImageView
         android:layout_width="@dimen/qr_image_width"
         android:layout_height="@dimen/qr_image_height"
         android:id="@+id/qr_code_image_view"
-        android:layout_centerVertical="true"
+        android:layout_marginTop="20dp"
+        android:layout_below="@+id/linearLayout"
         android:layout_centerHorizontal="true" />
 
 </RelativeLayout>

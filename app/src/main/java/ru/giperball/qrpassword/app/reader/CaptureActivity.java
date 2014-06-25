@@ -10,6 +10,8 @@ import android.view.SurfaceView;
 import android.widget.CompoundButton;
 import android.widget.ToggleButton;
 
+import ru.giperball.qrpassword.app.PasswordDialog;
+import ru.giperball.qrpassword.app.QrPasswordMode;
 import ru.giperball.qrpassword.app.R;
 
 
@@ -60,7 +62,7 @@ public class CaptureActivity extends Activity implements Scanner.ScannerListener
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.main_menu_set_reader_password_menu_item:
-                ReaderPasswordDialog passwordDialog = new ReaderPasswordDialog(this, null);
+                PasswordDialog passwordDialog = new PasswordDialog(this, QrPasswordMode.READER_PASSWORD, null);
                 passwordDialog.show();
                 break;
         }

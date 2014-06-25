@@ -1,4 +1,4 @@
-package ru.giperball.qrpassword.app.reader;
+package ru.giperball.qrpassword.app;
 
 import android.app.Dialog;
 import android.content.Context;
@@ -11,28 +11,27 @@ import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import ru.giperball.qrpassword.app.BadPasswordException;
-import ru.giperball.qrpassword.app.PasswordDialogSubmitListener;
-import ru.giperball.qrpassword.app.PasswordHolder;
-import ru.giperball.qrpassword.app.R;
-
 /**
  * Dialog for setting password for reading data from qr codes
  */
-public class ReaderPasswordDialog extends Dialog {
+public class PasswordDialog extends Dialog {
     private PasswordDialogSubmitListener dialogSubmitListener;
+    private QrPasswordMode mode;
 
-    public ReaderPasswordDialog(Context context, PasswordDialogSubmitListener dialogSubmitListener) {
+    public PasswordDialog(Context context,
+                          QrPasswordMode mode,
+                          PasswordDialogSubmitListener dialogSubmitListener) {
         super(context);
         this.dialogSubmitListener = dialogSubmitListener;
+        this.mode = mode;
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.reader_password_dialog);
-        final EditText editText = (EditText)findViewById(R.id.reader_password_dialog_edit_text);
-        CheckBox checkBox = (CheckBox)findViewById(R.id.reader_password_dialog_checkbox);
+        setContentView(R.layout.password_dialog);
+        final EditText editText = (EditText)findViewById(R.id.password_dialog_edit_text);
+        CheckBox checkBox = (CheckBox)findViewById(R.id.password_dialog_checkbox);
         checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -43,13 +42,16 @@ public class ReaderPasswordDialog extends Dialog {
                 }
             }
         });
-        Button button = (Button)findViewById(R.id.reader_password_dialog_ok_button);
+        Button button = (Button)findViewById(R.id.password_dialog_ok_button);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 try {
-                    PasswordHolder.setReaderPassword(editText.getText().toString());
-                    ReaderPasswordDialog.this.dismiss();
+                    String password = editText.getText().toString();
+                    PasswordChecker.checkPassword(password);
+                    PasswordHolder passwordHolder = mode.getPasswordHolder();
+                    passwordHolder.setPassword(password);
+                    PasswordDialog.this.dismiss();
                     if (dialogSubmitListener != null) {
                         dialogSubmitListener.onDialogSubmit();
                     }

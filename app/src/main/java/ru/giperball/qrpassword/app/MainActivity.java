@@ -8,10 +8,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
-import ru.giperball.qrpassword.app.reader.CaptureActivity;
-import ru.giperball.qrpassword.app.reader.ReaderPasswordDialog;
-import ru.giperball.qrpassword.app.writer.CreatorActivity;
-
 public class MainActivity extends Activity {
 
     @Override
@@ -22,7 +18,7 @@ public class MainActivity extends Activity {
         go2CreateQrCodeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                go2WriterActivity();
+                handleActivityLaunch(QrPasswordMode.WRITER_PASSWORD);
             }
         });
 
@@ -30,31 +26,25 @@ public class MainActivity extends Activity {
         go2ReadQrCodeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (PasswordHolder.isReaderPasswordSet()) {
-                    go2ReaderActivity();
-                } else {
-                    ReaderPasswordDialog passwordDialog = new ReaderPasswordDialog(
-                            MainActivity.this,
-                            new PasswordDialogSubmitListener() {
-                                @Override
-                                public void onDialogSubmit() {
-                                    go2ReaderActivity();
-                                }
-                            });
-                    passwordDialog.show();
-                }
+                handleActivityLaunch(QrPasswordMode.READER_PASSWORD);
             }
         });
     }
 
-    private void go2ReaderActivity() {
-        Intent intent = new Intent(this, CaptureActivity.class);
-        startActivity(intent);
-    }
-
-    private void go2WriterActivity() {
-        Intent intent = new Intent(this, CreatorActivity.class);
-        startActivity(intent);
+    void handleActivityLaunch(QrPasswordMode mode) {
+        PasswordHolder passwordHolder = mode.getPasswordHolder();
+        final Intent intent = new Intent(this, mode.getActivityClass());
+        if (passwordHolder.isPasswordSet()) {
+            startActivity(intent);
+        } else {
+            PasswordDialog passwordDialog = new PasswordDialog(this, mode, new PasswordDialogSubmitListener() {
+                @Override
+                public void onDialogSubmit() {
+                    MainActivity.this.startActivity(intent);
+                }
+            });
+            passwordDialog.show();
+        }
     }
 
 
@@ -66,14 +56,17 @@ public class MainActivity extends Activity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        QrPasswordMode mode = null;
         switch (item.getItemId()) {
             case R.id.main_menu_set_reader_password_menu_item:
-                ReaderPasswordDialog passwordDialog = new ReaderPasswordDialog(this, null);
-                passwordDialog.show();
+                mode = QrPasswordMode.READER_PASSWORD;
                 break;
             case R.id.main_menu_set_writer_password_menu_item:
+                mode = QrPasswordMode.WRITER_PASSWORD;
                 break;
         }
+        PasswordDialog passwordDialog = new PasswordDialog(this, mode, null);
+        passwordDialog.show();
         return true;
     }
 }
