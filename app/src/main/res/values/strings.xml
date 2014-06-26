@@ -22,5 +22,7 @@
     <string name="private_data_placeholder_text">password</string>
     <string name="different_private_data">Passwords are different</string>
     <string name="file_saved">File successfully saved</string>
+    <string name="password_is_not_set">Password is not set</string>
+    <string name="bad_password">Bad password</string>
 
 </resources>

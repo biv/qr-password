@@ -4,13 +4,19 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.SurfaceView;
 import android.widget.CompoundButton;
+import android.widget.Toast;
 import android.widget.ToggleButton;
 
+import ru.giperball.qrpassword.app.BadPasswordException;
+import ru.giperball.qrpassword.app.Encryptor;
+import ru.giperball.qrpassword.app.PasswordChecker;
 import ru.giperball.qrpassword.app.PasswordDialog;
+import ru.giperball.qrpassword.app.PasswordHolder;
 import ru.giperball.qrpassword.app.QrPasswordMode;
 import ru.giperball.qrpassword.app.R;
 
@@ -71,9 +77,23 @@ public class CaptureActivity extends Activity implements Scanner.ScannerListener
 
     @Override
     public void onScannerResult(String scanResult) {
+        String password = PasswordHolder.getReaderPasswordHolder().getPassword();
+        try {
+            PasswordChecker.checkPassword(password);
+        } catch (BadPasswordException e) {
+            Toast.makeText(this, R.string.bad_password, Toast.LENGTH_LONG).show();
+            return;
+        }
+        String result;
+        try {
+            result = Encryptor.decrypt(scanResult, password);
+        } catch (Exception e) {
+            Log.e(CaptureActivity.class.getSimpleName(), "Decryption error");
+            return;
+        }
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(R.string.result_dialog_title);
-        builder.setMessage(scanResult);
+        builder.setMessage(result);
         builder.setCancelable(true);
         builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override

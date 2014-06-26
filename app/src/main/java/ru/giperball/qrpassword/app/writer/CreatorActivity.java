@@ -22,7 +22,10 @@ import java.io.OutputStream;
 import java.util.HashMap;
 import java.util.Map;
 
+import ru.giperball.qrpassword.app.Encryptor;
+import ru.giperball.qrpassword.app.PasswordChecker;
 import ru.giperball.qrpassword.app.PasswordDialog;
+import ru.giperball.qrpassword.app.PasswordHolder;
 import ru.giperball.qrpassword.app.QrPasswordMode;
 import ru.giperball.qrpassword.app.R;
 
@@ -31,7 +34,7 @@ public class CreatorActivity extends Activity {
     private static final int QR_CODE_PREVIEW_HEIGHT = 200;
     private static final int QR_CODE_IMAGE_WIDTH = 1000;
     private static final int QR_CODE_IMAGE_HEIGHT = 1000;
-    private static final int MAX_NUMBER_OF_FILES = 1000;
+    private static final int MAX_NUMBER_OF_FILES = 100;
     private static final String QR_CODE_IMAGE_FILE_NAME_PATTERN = "qrpassword";
 
     @Override
@@ -45,7 +48,7 @@ public class CreatorActivity extends Activity {
                 try {
                     handleShowButtonClick();
                 } catch (Exception e) {
-                    Log.e(CreatorActivity.class.getSimpleName(), "Can't show preview", e);
+                    Log.e(CreatorActivity.class.getSimpleName(), "Can't show preview: " + e.getMessage(), e);
                 }
             }
         });
@@ -57,7 +60,7 @@ public class CreatorActivity extends Activity {
                     handleSaveButtonClick();
                     Toast.makeText(CreatorActivity.this, R.string.file_saved, Toast.LENGTH_LONG).show();
                 } catch (Exception e) {
-                    Log.e(CreatorActivity.class.getSimpleName(), "Can't save qr code to file", e);
+                    Log.e(CreatorActivity.class.getSimpleName(), "Can't save qr code to file: " + e.getMessage(), e);
                 }
             }
         });
@@ -131,16 +134,17 @@ public class CreatorActivity extends Activity {
         exifInterface.saveAttributes();
     }
 
-    private String getDataToEncode() {
+    private String getDataToEncode() throws Exception {
         EditText privateDataEditText0 = (EditText) findViewById(R.id.private_data_encoding_edit_text0);
         String privateData = privateDataEditText0.getText().toString();
         EditText privateDataEditText1 = (EditText) findViewById(R.id.private_data_encoding_edit_text1);
         String privateData4Check = privateDataEditText1.getText().toString();
         if (!privateData.equals(privateData4Check)) {
-            Toast.makeText(CreatorActivity.this, R.string.different_private_data, Toast.LENGTH_SHORT).show();
-            return null;
+            throw new Exception(getResources().getString(R.string.different_private_data));
         }
-        return privateData;
+        String password = PasswordHolder.getWriterPasswordHolder().getPassword();
+        PasswordChecker.checkPassword(password);
+        return Encryptor.encrypt(privateData, password);
     }
 
     private Map<String, String> getDataForExif() {
