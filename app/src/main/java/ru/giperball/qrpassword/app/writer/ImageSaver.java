@@ -59,10 +59,10 @@ public class ImageSaver {
     }
 
     private File getImageDirectory() throws Exception {
-        File pictureDirectory = context.getExternalFilesDir(Environment.DIRECTORY_PICTURES);
-        File qrPasswordDirectory = new File(pictureDirectory, "QrPasswords");
+        File bsRoot = new File(Environment.getExternalStorageDirectory(), "QrPasswords");
+        File qrPasswordDirectory = new File(bsRoot, "QrCodes");
         if (!qrPasswordDirectory.exists()) {
-            if (!qrPasswordDirectory.mkdir()) {
+            if (!qrPasswordDirectory.mkdirs()) {
                 throw new Exception("Can't create directory for images");
             }
         }
