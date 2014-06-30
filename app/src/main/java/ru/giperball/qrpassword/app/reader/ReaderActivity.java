@@ -4,31 +4,29 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.SurfaceView;
 import android.widget.CompoundButton;
-import android.widget.Toast;
 import android.widget.ToggleButton;
 
-import ru.giperball.qrpassword.app.BadPasswordException;
 import ru.giperball.qrpassword.app.Encryptor;
 import ru.giperball.qrpassword.app.PasswordChecker;
 import ru.giperball.qrpassword.app.PasswordDialog;
 import ru.giperball.qrpassword.app.PasswordHolder;
 import ru.giperball.qrpassword.app.QrPasswordMode;
 import ru.giperball.qrpassword.app.R;
+import ru.giperball.qrpassword.app.exceptions.ExceptionHandler;
 
 
-public class CaptureActivity extends Activity implements Scanner.ScannerListener {
+public class ReaderActivity extends Activity implements Scanner.ScannerListener {
     private CameraManager cameraManager;
     private Scanner scanner;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_capture);
+        setContentView(R.layout.activity_reader);
         SurfaceView surfaceView = (SurfaceView)findViewById(R.id.camera_preview);
         cameraManager = new CameraManager(surfaceView.getHolder());
         scanner = new Scanner(this, cameraManager);
@@ -60,7 +58,7 @@ public class CaptureActivity extends Activity implements Scanner.ScannerListener
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.capture, menu);
+        getMenuInflater().inflate(R.menu.reader, menu);
         return true;
     }
 
@@ -78,22 +76,21 @@ public class CaptureActivity extends Activity implements Scanner.ScannerListener
     @Override
     public void onScannerResult(String scanResult) {
         String password = PasswordHolder.getReaderPasswordHolder().getPassword();
-        try {
-            PasswordChecker.checkPassword(password);
-        } catch (BadPasswordException e) {
-            Toast.makeText(this, R.string.bad_password, Toast.LENGTH_LONG).show();
-            return;
-        }
         String result;
         try {
+            PasswordChecker.checkPassword(password);
             result = Encryptor.decrypt(scanResult, password);
         } catch (Exception e) {
-            Log.e(CaptureActivity.class.getSimpleName(), "Decryption error");
+            ExceptionHandler.handleException(this, e);
             return;
         }
+        showResult(result);
+    }
+
+    private void showResult(String message) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle(R.string.result_dialog_title);
-        builder.setMessage(result);
+        builder.setTitle(R.string.result);
+        builder.setMessage(message);
         builder.setCancelable(true);
         builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override

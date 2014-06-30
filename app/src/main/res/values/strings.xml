@@ -1,28 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
     <string name="app_name">QR password</string>
+
     <string name="start_scan">Start scan</string>
     <string name="stop_scan">Stop scan</string>
-    <string name="action_settings">Settings</string>
-    <string name="result_dialog_title">Result</string>
-    <string name="title_activity_main">MainActivity</string>
-    <string name="hello_world">Hello world!</string>
-    <string name="go2create_button">Create new QR code with password</string>
-    <string name="go2read_button">Read password from QR code</string>
-    <string name="title_activity_creator">CreatorActivity</string>
-    <string name="password_dialog_checkbox_text">Show password</string>
-    <string name="reader_password_dialog_ok_button_text">OK</string>
+    <string name="settings">Settings</string>
+    <string name="result">Result</string>
+    <string name="create_new_qr_code_with_password">Create new QR code with password</string>
+    <string name="read_password_from_qr_code">Read password from QR code</string>
+    <string name="show_password">Show password</string>
     <string name="incorrect_password">Incorrect password</string>
-    <string name="main_menu_set_reader_password_menu_item_name">Set password for read</string>
-    <string name="main_menu_set_writer_password_menu_item_name">Set password for write</string>
+    <string name="set_password_for_reader">Set password for read</string>
+    <string name="set_password_for_writer">Set password for write</string>
     <string name="show">Show</string>
     <string name="save">Save</string>
-    <string name="public_data_placeholder_text">public data</string>
-    <string name="private_data_placeholder_text">password</string>
-    <string name="different_private_data">Passwords are different</string>
-    <string name="file_saved">File successfully saved</string>
-    <string name="password_is_not_set">Password is not set</string>
-    <string name="bad_password">Bad password</string>
+    <string name="public_data">public data</string>
+    <string name="private_data">private data</string>
+    <string name="repeat_private_data">repeat private data</string>
 
+
+
+    <!-- Messages -->
+    <string name="FILE_SAVED">File successfully saved</string>
+
+    <!-- Exceptions -->
+    <string name="PASSWORD_LENGTH_EXCEPTION">Password must have at least %d symbols</string>
+    <string name="DIFFERENT_PRIVATE_DATA">Passwords are different</string>
+    <string name="SOME_ERROR">ERROR</string>
 </resources>

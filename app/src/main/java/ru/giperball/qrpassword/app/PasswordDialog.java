@@ -9,7 +9,8 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
-import android.widget.Toast;
+
+import ru.giperball.qrpassword.app.exceptions.ExceptionHandler;
 
 /**
  * Dialog for setting password for reading data from qr codes
@@ -55,8 +56,8 @@ public class PasswordDialog extends Dialog {
                     if (dialogSubmitListener != null) {
                         dialogSubmitListener.onDialogSubmit();
                     }
-                } catch (BadPasswordException e) {
-                    Toast.makeText(getContext(), R.string.incorrect_password, Toast.LENGTH_SHORT).show();
+                } catch (Exception e) {
+                    ExceptionHandler.handleException(getContext(), e);
                 }
             }
         });

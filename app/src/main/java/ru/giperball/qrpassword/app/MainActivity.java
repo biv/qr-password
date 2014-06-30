@@ -31,7 +31,7 @@ public class MainActivity extends Activity {
         });
     }
 
-    void handleActivityLaunch(QrPasswordMode mode) {
+    private void handleActivityLaunch(QrPasswordMode mode) {
         PasswordHolder passwordHolder = mode.getPasswordHolder();
         final Intent intent = new Intent(this, mode.getActivityClass());
         if (passwordHolder.isPasswordSet()) {

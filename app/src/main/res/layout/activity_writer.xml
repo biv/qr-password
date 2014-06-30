@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_height="match_parent"
     android:layout_width="match_parent"
-    tools:context="ru.giperball.qrpassword.app.writer.CreatorActivity">
+    tools:context="ru.giperball.qrpassword.app.writer.WriterActivity">
 
     <LinearLayout
         android:orientation="vertical"
@@ -18,21 +18,21 @@
             android:layout_height="wrap_content"
             android:id="@+id/public_data_encoding_edit_text"
             android:inputType="text"
-            android:hint="@string/public_data_placeholder_text"/>
+            android:hint="@string/public_data"/>
 
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/private_data_encoding_edit_text0"
-            android:inputType="text"
-            android:hint="@string/private_data_placeholder_text"/>
+            android:inputType="textPassword"
+            android:hint="@string/private_data"/>
 
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/private_data_encoding_edit_text1"
-            android:inputType="text"
-            android:hint="@string/private_data_placeholder_text"/>
+            android:inputType="textPassword"
+            android:hint="@string/repeat_private_data"/>
 
         <LinearLayout
             android:layout_width="match_parent"
