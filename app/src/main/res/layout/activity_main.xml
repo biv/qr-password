@@ -6,7 +6,7 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/create_new_qr_code_with_password"
+        android:text="@string/create_new_encoded_qr_code"
         android:id="@+id/go2create_button"
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true" />
@@ -14,7 +14,7 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/read_password_from_qr_code"
+        android:text="@string/read_encoded_qr_code"
         android:id="@+id/go2read_button"
         android:layout_marginTop="47dp"
         android:layout_below="@+id/go2create_button"
